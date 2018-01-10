@@ -61,12 +61,35 @@ public class FoodService {
     }
 
     public String createFoodItem(FoodModel foodModel) throws Exception {
-        mapper.save(foodModel);
+       try {
+           mapper.save(foodModel);
+       }catch (Exception ex){
+           throw new Exception("Failed to Add new Food item",ex);
+       }
         return foodModel.getItemId();
     }
 
     public void delete(String itemId) throws Exception {
-        FoodModel foodModel = getFoodById(itemId).one();
-        mapper.delete(foodModel);
+        try {
+            FoodModel foodModel = getFoodById(itemId).one();
+            mapper.delete(foodModel);
+        }catch (Exception ex){
+            throw new Exception("Failed to delete food item with item id: "+itemId.toString(),ex);
+        }
+    }
+
+    public String update(FoodModel data) throws Exception {
+        try {
+            String itemId = createFoodItem(data);
+            FoodModel foodModel = getFoodById(itemId).one();
+            mapper.delete(foodModel);
+            String deletedItemId = foodModel.getItemId();
+            FoodModel foodModelDataAfterDeleted = getFoodById(deletedItemId).one();
+            return foodModelDataAfterDeleted.getItemId();
+        }catch (Exception ex){
+            throw new Exception("item id does not exist",ex);
+
+        }
+
     }
 }

@@ -29,6 +29,10 @@ public class FoodTestController extends FoodTest {
     FoodService foodService;
 
     private String json ="{\"itemId\":\"3\",\"itemPrice\":\"35\",\"name\":\"veg-burger\"}";
+   
+    
+    private String updateJson ="{\"itemId\":\"2\",\"itemPrice\":\"35\",\"name\":\"veg-burger\"}";
+
 
     @Before
     public void setup(){
@@ -73,13 +77,19 @@ public class FoodTestController extends FoodTest {
 
     }
 
+     @Test
+    public void testFoodItemForUpdate() throws Exception{
 
+        MvcResult result= mockMvc.perform(patch("/fooditems/updateitem")
+        .accept(MediaType.APPLICATION_JSON)
+        .content(updateJson)
+        .contentType(MediaType.APPLICATION_JSON))
+        .andReturn();
 
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(),response.getStatus());
 
-
-
-
-
+    }
 
 
 }

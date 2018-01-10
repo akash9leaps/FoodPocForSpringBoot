@@ -86,4 +86,21 @@ public class FoodController {
         return response;
     }
 
+    @ApiOperation(value = "Update a Food Object from Database", consumes = "application/json")
+    @ApiParam(name = "itemId", value = "ItemID to update",
+            required = true)
+    @RequestMapping(value = "/updateitem/{itemId}",method = RequestMethod.PATCH)
+    public ResponseEntity<Object> update(@RequestBody FoodModel data) {
+        ResponseEntity<Object> response = null;
+        try {
+            String itemId=foodService.update(data);
+            response = new ResponseEntity<Object>("Item updated successfully with Id :" +
+                    itemId, HttpStatus.OK);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
 }
