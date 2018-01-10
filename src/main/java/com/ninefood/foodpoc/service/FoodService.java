@@ -92,4 +92,23 @@ public class FoodService {
         }
 
     }
+
+   public Result<FoodModel> getAllFoodItem() throws Exception{
+            Result<FoodModel> resultFood = null;
+            Statement statement = QueryBuilder
+                    .select()
+                    .from(keyspaceName, "foodnineleaps").setFetchSize(10);
+
+            statement.setConsistencyLevel(cassandraConnector.getConsistencyLevel());
+            try {
+                ResultSet resultSet = session.execute(statement);
+                resultFood = mapper.map(resultSet);
+                System.out.println(resultFood);
+
+            } catch (Exception e) {
+                throw new Exception("Failed to search Food items :", e);
+            }
+            return resultFood;
+        }
+
 }

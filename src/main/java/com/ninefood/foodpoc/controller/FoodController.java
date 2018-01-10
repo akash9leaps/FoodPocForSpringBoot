@@ -30,6 +30,27 @@ public class FoodController {
     private static final String NO_RECORD = "Food not found for Item Id : ";
 
     @ApiOperation(value = "Search Food by itemId", produces = "application/json")
+    @RequestMapping(value = "/allfooditems", method = RequestMethod.GET)
+    public ResponseEntity<Object> searchAllFood() {
+        String itemId="ok";
+        Result<FoodModel> foodResult = null;
+        ResponseEntity<Object> response = null;
+        try {
+            foodResult = foodService.getAllFoodItem();
+            if (foodResult == null) {
+                response = new ResponseEntity<Object>(NO_RECORD + itemId, HttpStatus.OK);
+            } else {
+                response = new ResponseEntity<Object>(foodResult.all(), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
+
+    @ApiOperation(value = "Search Food by itemId", produces = "application/json")
     @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
     public ResponseEntity<Object> searchFoodById(@ApiParam(name = "itemId",
             value = "The Id of the Food to be viewed",

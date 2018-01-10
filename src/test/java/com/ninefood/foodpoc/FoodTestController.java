@@ -90,6 +90,16 @@ public class FoodTestController extends FoodTest {
         assertEquals(HttpStatus.OK.value(),response.getStatus());
 
     }
+	
+    @Test
+    public void testFoodItems() throws Exception{
+        MvcResult result = mockMvc.perform(get("/fooditems/allfooditems")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
 
+    }
 
 }
